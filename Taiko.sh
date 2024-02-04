@@ -47,17 +47,8 @@ cd simple-taiko-node
 # 复制示例环境变量文件
 cp .env.sample .env
 
-read -p "输入L1 HTTP 链接: " L1_ENDPOINT_HTTP
-read -p "输入L1 WSS 链接: " L1_ENDPOINT_WS
-read -p "输入是否允许作为Prover角色（true/false）: " ENABLE_PROVER
-read -p "输入L1 EVM 私钥: " L1_PROVER_PRIVATE_KEY
-
-# Write to the .env file
-echo "L1_ENDPOINT_HTTP=$L1_ENDPOINT_HTTP" >> "/root/simple-taiko-node/.env"
-echo "L1_ENDPOINT_WS=$L1_ENDPOINT_WS" >> "/root/simple-taiko-node/.env"
-echo "ENABLE_PROVER=$ENABLE_PROVER" >> "/root/simple-taiko-node/.env"
-echo "L1_PROVER_PRIVATE_KEY=$L1_PROVER_PRIVATE_KEY" >> "/root/simple-taiko-node/.env"
-
+# 修改配置文件
+nano .env
 
 # 运行 Taiko 节点
 docker compose up -d
