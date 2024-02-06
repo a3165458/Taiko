@@ -50,10 +50,10 @@ if [ ! -f .env ]; then
 fi
 
 # 提示用户输入环境变量的值
-read -p "Enter L1_ENDPOINT_HTTP: " l1_endpoint_http
-read -p "Enter L1_ENDPOINT_WS: " l1_endpoint_ws
-read -p "Enter ENABLE_PROVER: " enable_prover
-read -p "Enter L1_PROVER_PRIVATE_KEY: " l1_prover_private_key
+read -p "输入BlockPI holesky HTTP链接: " l1_endpoint_http
+read -p "输入BlockPI holesky WS链接: " l1_endpoint_ws
+read -p "确认是否作为证明者（输入True或者False）: " enable_prover
+read -p "输入0x开头的EVM钱包私钥: " l1_prover_private_key
 
 # 将用户输入的值写入.env文件
 sed -i "s|L1_ENDPOINT_HTTP=.*|L1_ENDPOINT_HTTP=${l1_endpoint_http}|" .env
