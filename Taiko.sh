@@ -7,29 +7,38 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install pkg-config curl git-all build-essential libssl-dev libclang-dev ufw -y
 
 # 3. 检查 Docker 是否已安装并且是最新版本
-docker version
-# 如果 Docker 未安装，执行以下命令安装 Docker 所需的依赖
-sudo apt-get install ca-certificates curl gnupg lsb-release
+if ! command -v docker &> /dev/null
+then
+    echo "Docker could not be found, installing..."
+    sudo apt-get install ca-certificates curl gnupg lsb-release
 
-# 添加 Docker 的官方 GPG 密钥
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    # 添加 Docker 的官方 GPG 密钥
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
-# 设置 Docker 仓库
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    # 设置 Docker 仓库
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# 为 Docker 文件授权，以防万一，然后更新包索引
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
-sudo apt-get update
+    # 为 Docker 文件授权，以防万一，然后更新包索引
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+    sudo apt-get update
 
-# 安装 Docker 的最新版本
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+    # 安装 Docker 的最新版本
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+else
+    echo "Docker is already installed."
+fi
 
-
-# 现在安装 Docker Compose
-sudo apt install docker-compose -y
+# 现在检查 Docker Compose 是否已安装
+if ! command -v docker-compose &> /dev/null
+then
+    echo "Docker Compose could not be found, installing..."
+    sudo apt install docker-compose -y
+else
+    echo "Docker Compose is already installed."
+fi
 
 # 验证 Docker Engine 安装是否成功
 sudo docker run hello-world
@@ -76,5 +85,3 @@ original_url="LocalHost:3001/d/L2ExecutionEngine/l2-execution-engine-overview?or
 # 替换 LocalHost 为公网 IP 地址
 updated_url=$(echo $original_url | sed "s/LocalHost/$public_ip/")
 
-# 显示更新后的链接
-echo "请进入该链接查询设备运行情况，如果还无法进入，请等待2-3分钟 $updated_url"
