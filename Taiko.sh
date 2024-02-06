@@ -85,3 +85,5 @@ original_url="LocalHost:3001/d/L2ExecutionEngine/l2-execution-engine-overview?or
 # 替换 LocalHost 为公网 IP 地址
 updated_url=$(echo $original_url | sed "s/LocalHost/$public_ip/")
 
+# 显示更新后的链接
+echo "请进入该链接查询设备运行情况，如果还无法进入，请等待2-3分钟 $updated_url"
