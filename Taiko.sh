@@ -28,14 +28,45 @@ fi
 # 提示用户输入环境变量的值
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
-read -p "请确认是否作为证明者（输入True或者False）: " enable_prover
+read -p "请确认是否作为证明者（输入true或者false）: " enable_prover
 read -p "请输入0x开头的EVM钱包私钥: " l1_prover_private_key
+
+# 提示用户输入端口配置，允许使用默认值
+read -p "请输入L2执行引擎HTTP端口 [默认: 8547]: " port_l2_execution_engine_http
+port_l2_execution_engine_http=${port_l2_execution_engine_http:-8547}
+
+read -p "请输入L2执行引擎WS端口 [默认: 8548]: " port_l2_execution_engine_ws
+port_l2_execution_engine_ws=${port_l2_execution_engine_ws:-8548}
+
+read -p "请输入L2执行引擎Metrics端口 [默认: 6060]: " port_l2_execution_engine_metrics
+port_l2_execution_engine_metrics=${port_l2_execution_engine_metrics:-6060}
+
+read -p "请输入L2执行引擎P2P端口 [默认: 30306]: " port_l2_execution_engine_p2p
+port_l2_execution_engine_p2p=${port_l2_execution_engine_p2p:-30306}
+
+read -p "请输入证明者服务器端口 [默认: 9876]: " port_prover_server
+port_prover_server=${port_prover_server:-9876}
+
+read -p "请输入Prometheus端口 [默认: 9091]: " port_prometheus
+port_prometheus=${port_prometheus:-9091}
+
+read -p "请输入Grafana端口 [默认: 3001]: " port_grafana
+port_grafana=${port_grafana:-3001}
 
 # 将用户输入的值写入.env文件
 sed -i "s|L1_ENDPOINT_HTTP=.*|L1_ENDPOINT_HTTP=${l1_endpoint_http}|" .env
 sed -i "s|L1_ENDPOINT_WS=.*|L1_ENDPOINT_WS=${l1_endpoint_ws}|" .env
 sed -i "s|ENABLE_PROVER=.*|ENABLE_PROVER=${enable_prover}|" .env
 sed -i "s|L1_PROVER_PRIVATE_KEY=.*|L1_PROVER_PRIVATE_KEY=${l1_prover_private_key}|" .env
+
+# 更新.env文件中的端口配置
+sed -i "s|PORT_L2_EXECUTION_ENGINE_HTTP=.*|PORT_L2_EXECUTION_ENGINE_HTTP=${port_l2_execution_engine_http}|" .env
+sed -i "s|PORT_L2_EXECUTION_ENGINE_WS=.*|PORT_L2_EXECUTION_ENGINE_WS=${port_l2_execution_engine_ws}|" .env
+sed -i "s|PORT_L2_EXECUTION_ENGINE_METRICS=.*|PORT_L2_EXECUTION_ENGINE_METRICS=${port_l2_execution_engine_metrics}|" .env
+sed -i "s|PORT_L2_EXECUTION_ENGINE_P2P=.*|PORT_L2_EXECUTION_ENGINE_P2P=${port_l2_execution_engine_p2p}|" .env
+sed -i "s|PORT_PROVER_SERVER=.*|PORT_PROVER_SERVER=${port_prover_server}|" .env
+sed -i "s|PORT_PROMETHEUS=.*|PORT_PROMETHEUS=${port_prometheus}|" .env
+sed -i "s|PORT_GRAFANA=.*|PORT_GRAFANA=${port_grafana}|" .env
 
 # 用户信息已配置完毕
 echo "用户信息已配置完毕。"
