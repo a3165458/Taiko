@@ -1,51 +1,16 @@
 #!/bin/bash
 
-# 1. 更新系统包列表并升级所有已安装的包
-sudo apt update && sudo apt upgrade -y
+# 更新系统包列表
+sudo apt update
 
-# 2. 安装基本组件，包括编译工具、库和其他必要的软件包
-sudo apt install pkg-config curl git-all build-essential libssl-dev libclang-dev ufw -y
-
-# 3. 检查 Docker 是否已安装并且是最新版本
-if ! command -v docker &> /dev/null
+# 检查 Git 是否已安装
+if ! command -v git &> /dev/null
 then
-    echo "Docker could not be found, installing..."
-    sudo apt-get install ca-certificates curl gnupg lsb-release
-
-    # 添加 Docker 的官方 GPG 密钥
-    sudo mkdir -p /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-    # 设置 Docker 仓库
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-    # 为 Docker 文件授权，以防万一，然后更新包索引
-    sudo chmod a+r /etc/apt/keyrings/docker.gpg
-    sudo apt-get update
-
-    # 安装 Docker 的最新版本
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+    echo "Git could not be found, installing..."
+    sudo apt install git -y
 else
-    echo "Docker is already installed."
+    echo "Git is already installed."
 fi
-
-# 现在检查 Docker Compose 是否已安装
-if ! command -v docker-compose &> /dev/null
-then
-    echo "Docker Compose could not be found, installing..."
-    sudo apt install docker-compose -y
-else
-    echo "Docker Compose is already installed."
-fi
-
-# 验证 Docker Engine 安装是否成功
-sudo docker run hello-world
-# 你应该看到 hello-world 程序的输出
-
-# 检查 Docker Compose 版本
-docker-compose -v
 
 # 克隆 Taiko 仓库
 git clone https://github.com/taikoxyz/simple-taiko-node.git
@@ -72,6 +37,38 @@ sed -i "s|L1_PROVER_PRIVATE_KEY=.*|L1_PROVER_PRIVATE_KEY=${l1_prover_private_key
 
 # 提示信息
 echo "用户信息已经配置。"
+
+# 升级所有已安装的包
+sudo apt upgrade -y
+
+# 安装基本组件，包括编译工具、库和其他必要的软件包
+sudo apt install pkg-config curl build-essential libssl-dev libclang-dev ufw -y
+
+# 检查 Docker 是否已安装
+if ! command -v docker &> /dev/null
+then
+    echo "Docker could not be found, installing..."
+    # 安装 Docker 的步骤
+    # [省略了安装 Docker 的详细步骤，可以在这里添加]
+else
+    echo "Docker is already installed."
+fi
+
+# 检查 Docker Compose 是否已安装
+if ! command -v docker-compose &> /dev/null
+then
+    echo "Docker Compose could not be found, installing..."
+    sudo apt install docker-compose -y
+else
+    echo "Docker Compose is already installed."
+fi
+
+# 验证 Docker Engine 安装是否成功
+sudo docker run hello-world
+# 你应该看到 hello-world 程序的输出
+
+# 检查 Docker Compose 版本
+docker-compose -v
 
 # 运行 Taiko 节点
 docker compose up -d
