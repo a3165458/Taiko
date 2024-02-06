@@ -44,11 +44,37 @@ git clone https://github.com/taikoxyz/simple-taiko-node.git
 # 进入 Taiko 目录
 cd simple-taiko-node
 
-# 复制示例环境变量文件
-cp .env.sample .env
+# 如果不存在.env文件，则从示例创建一个
+if [ ! -f .env ]; then
+  cp .env.sample .env
+fi
 
-# 修改配置文件
-nano .env
+# 提示用户输入环境变量的值
+read -p "Enter L1_ENDPOINT_HTTP: " l1_endpoint_http
+read -p "Enter L1_ENDPOINT_WS: " l1_endpoint_ws
+read -p "Enter ENABLE_PROVER: " enable_prover
+read -p "Enter L1_PROVER_PRIVATE_KEY: " l1_prover_private_key
+
+# 将用户输入的值写入.env文件
+sed -i "s|L1_ENDPOINT_HTTP=.*|L1_ENDPOINT_HTTP=${l1_endpoint_http}|" .env
+sed -i "s|L1_ENDPOINT_WS=.*|L1_ENDPOINT_WS=${l1_endpoint_ws}|" .env
+sed -i "s|ENABLE_PROVER=.*|ENABLE_PROVER=${enable_prover}|" .env
+sed -i "s|L1_PROVER_PRIVATE_KEY=.*|L1_PROVER_PRIVATE_KEY=${l1_prover_private_key}|" .env
+
+# 提示信息
+echo "用户信息已经配置。"
 
 # 运行 Taiko 节点
 docker compose up -d
+
+# 进入网页查询
+public_ip=$(curl -s ifconfig.me)
+
+# 原始链接，其中的 LocalHost 将被替换
+original_url="LocalHost:3001/d/L2ExecutionEngine/l2-execution-engine-overview?orgId=1&refresh=10s"
+
+# 替换 LocalHost 为公网 IP 地址
+updated_url=$(echo $original_url | sed "s/LocalHost/$public_ip/")
+
+# 显示更新后的链接
+echo "请进入该链接查询设备运行情况，如果还无法进入，请等待2-3分钟 $updated_url"
