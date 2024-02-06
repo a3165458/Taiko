@@ -6,10 +6,10 @@ sudo apt update
 # 检查 Git 是否已安装
 if ! command -v git &> /dev/null
 then
-    echo "Git could not be found, installing..."
+    echo "Git未安装，执行安装..."
     sudo apt install git -y
 else
-    echo "Git is already installed."
+    echo "Git已经安装."
 fi
 
 # 克隆 Taiko 仓库
@@ -47,20 +47,35 @@ sudo apt install pkg-config curl build-essential libssl-dev libclang-dev ufw -y
 # 检查 Docker 是否已安装
 if ! command -v docker &> /dev/null
 then
-    echo "Docker could not be found, installing..."
-    # 安装 Docker 的步骤
-    # [省略了安装 Docker 的详细步骤，可以在这里添加]
+    echo "Docker未安装，执行安装..."
+    sudo apt-get install ca-certificates curl gnupg lsb-release
+
+    # 添加 Docker 的官方 GPG 密钥
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+    # 设置 Docker 仓库
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    # 为 Docker 文件授权，以防万一，然后更新包索引
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+    sudo apt-get update
+
+    # 安装 Docker 的最新版本
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 else
-    echo "Docker is already installed."
+    echo "Docker 已经安装."
 fi
 
 # 检查 Docker Compose 是否已安装
 if ! command -v docker-compose &> /dev/null
 then
-    echo "Docker Compose could not be found, installing..."
+    echo "Docker Compose 未安装，执行安装..."
     sudo apt install docker-compose -y
 else
-    echo "Docker Compose is already installed."
+    echo "Docker Compose 已经安装."
 fi
 
 # 验证 Docker Engine 安装是否成功
