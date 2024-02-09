@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 脚本保存路径
-SCRIPT_PATH="/root/manage_taiko.sh"
+SCRIPT_PATH="$HOME/manage_taiko.sh"
 
 # 安装节点功能
 function install_node() {
@@ -150,21 +150,27 @@ function view_logs() {
 }
 
 # 写入快捷键
-function set_alias() {
+function check_and_set_alias() {
     local alias_name="taikof"
     local shell_rc="$HOME/.bashrc"
 
+    # 对于Zsh用户，使用.zshrc
     if [ -n "$ZSH_VERSION" ]; then
         shell_rc="$HOME/.zshrc"
     elif [ -n "$BASH_VERSION" ]; then
         shell_rc="$HOME/.bashrc"
     fi
 
-    if ! grep -q "alias $alias_name=" "$shell_rc"; then
-        echo "alias $alias_name='bash $/root/manage_taiko.sh'" >> "$shell_rc"
-        echo "快捷键 '$alias_name' 已设置到 $shell_rc。"
+    # 检查快捷键是否已经设置
+    if ! grep -q "$alias_name" "$shell_rc"; then
+        echo "设置快捷键 '$alias_name' 到 $shell_rc"
+        echo "alias $alias_name='bash $SCRIPT_PATH'" >> "$shell_rc"
+        # 添加提醒用户激活快捷键的信息
+        echo "快捷键 '$alias_name' 已设置。请运行 'source $shell_rc' 来激活快捷键，或重新打开终端。"
     else
+        # 如果快捷键已经设置，提供一个提示信息
         echo "快捷键 '$alias_name' 已经设置在 $shell_rc。"
+        echo "如果快捷键不起作用，请尝试运行 'source $shell_rc' 或重新打开终端。"
     fi
 }
 
