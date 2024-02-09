@@ -1,43 +1,34 @@
 #!/bin/bash
 
-# 脚本保存路径
-SCRIPT_PATH="$HOME/manage_taiko.sh"
+# 更新系统包列表
+sudo apt update
 
-# 安装节点功能
-function install_node() {
-    # 更新系统包列表
-    sudo apt update
+# 检查 Git 是否已安装
+if ! command -v git &> /dev/null
+then
+    # 如果 Git 未安装，则进行安装
+    echo "未检测到 Git，正在安装..."
+    sudo apt install git -y
+else
+    # 如果 Git 已安装，则不做任何操作
+    echo "Git 已安装。"
+fi
 
-    # 检查 Git 是否已安装
-    if ! command -v git &> /dev/null; then
-        echo "未检测到 Git，正在安装..."
-        sudo apt install git -y
-    else
-        echo "Git 已安装。"
-    fi
+# 克隆 Taiko 仓库
+git clone https://github.com/taikoxyz/simple-taiko-node.git
 
-    # 克隆 Taiko 仓库
-    if [ ! -d "simple-taiko-node" ]; then
-        git clone https://github.com/taikoxyz/simple-taiko-node.git
-    else
-        echo "Taiko 仓库已经存在。"
-    fi
+# 进入 Taiko 目录
+cd simple-taiko-node
 
-    # 进入 Taiko 目录
-    pushd simple-taiko-node || exit
-
-    # 如果不存在.env文件，则从示例创建一个
-    if [ ! -f .env ]; then
-        cp .env.sample .env
-    fi
+# 如果不存在.env文件，则从示例创建一个
+if [ ! -f .env ]; then
+  cp .env.sample .env
+fi
 
 # 提示用户输入环境变量的值
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
-
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
-
 read -p "请确认是否作为证明者（输入true或者false）: " enable_prover
-
 read -p "请输入0x开头的EVM钱包私钥: " l1_prover_private_key
 
 # 提示用户输入端口配置，允许使用默认值
@@ -77,82 +68,68 @@ sed -i "s|PORT_PROVER_SERVER=.*|PORT_PROVER_SERVER=${port_prover_server}|" .env
 sed -i "s|PORT_PROMETHEUS=.*|PORT_PROMETHEUS=${port_prometheus}|" .env
 sed -i "s|PORT_GRAFANA=.*|PORT_GRAFANA=${port_grafana}|" .env
 
-    # 用户信息已配置完毕
-    echo "用户信息已配置完毕。"
+# 用户信息已配置完毕
+echo "用户信息已配置完毕。"
 
-    # 升级所有已安装的包
-    sudo apt upgrade -y
+# 升级所有已安装的包
+sudo apt upgrade -y
 
-    # 安装基本组件
-    sudo apt install pkg-config curl build-essential libssl-dev libclang-dev ufw -y
+# 安装基本组件
+sudo apt install pkg-config curl build-essential libssl-dev libclang-dev ufw -y
 
-    install_docker
+# 检查 Docker 是否已安装
+if ! command -v docker &> /dev/null
+then
+    # 如果 Docker 未安装，则进行安装
+    echo "未检测到 Docker，正在安装..."
+    sudo apt-get install ca-certificates curl gnupg lsb-release
 
-    # 运行 Taiko 节点
-    docker compose down && docker compose up -d
+    # 添加 Docker 官方 GPG 密钥
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
-    # 返回原始目录
-    popd
-}
+    # 设置 Docker 仓库
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# 安装 Docker 和 Docker Compose
-function install_docker() {
-    if ! command -v docker &> /dev/null; then
-        echo "安装Docker..."
-        sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
-    else
-        echo "Docker 已安装。"
-    fi
+    # 授权 Docker 文件
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+    sudo apt-get update
 
-    if ! command -v docker-compose &> /dev/null; then
-        echo "安装Docker Compose..."
-        sudo apt install docker-compose -y
-    else
-        echo "Docker Compose 已安装。"
-    fi
-}
+    # 安装 Docker 最新版本
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+else
+    echo "Docker 已安装。"
+fi
 
-# 查看 Docker Compose 日志
-function view_logs() {
-    pushd simple-taiko-node || exit
-    docker compose logs -f
-    popd
-}
+# 检查 Docker Compose 是否已安装
+if ! command -v docker-compose &> /dev/null
+then
+    echo "未检测到 Docker Compose，正在安装..."
+    sudo apt install docker-compose -y
+else
+    echo "Docker Compose 已安装。"
+fi
 
-# 写入快捷键
-function check_and_set_alias() {
-    local alias_name="taikof"
-    local shell_rc="$HOME/.bashrc"
+# 验证 Docker Engine 安装是否成功
+sudo docker run hello-world
+# 应该能看到 hello-world 程序的输出
 
-    if [ -n "$ZSH_VERSION" ]; then
-        shell_rc="$HOME/.zshrc"
-    elif [ -n "$BASH_VERSION" ]; then
-        shell_rc="$HOME/.bashrc"
-    fi
+# 检查 Docker Compose 版本
+docker-compose -v
 
-    if ! grep -q "alias $alias_name=" "$shell_rc"; then
-        echo "alias $alias_name='bash $SCRIPT_PATH'" >> "$shell_rc"
-        echo "快捷键 '$alias_name' 已设置到 $shell_rc。请运行 'source $shell_rc' 来激活快捷键，或重新打开终端。"
-    else
-        echo "快捷键 '$alias_name' 已经设置在 $shell_rc。"
-    fi
-}
+# 运行 Taiko 节点
+docker compose down && docker compose up -d
 
-# 主菜单
-function main_menu() {
-    echo "请选择要执行的操作:"
-    echo "1. 安装节点"
-    echo "2. 查看Docker Compose日志"
-    echo "3. 设置快捷键"
-    read -p "请输入选项（1-3）: " option
+# 获取公网 IP 地址
+public_ip=$(curl -s ifconfig.me)
 
-    case $option in
-    1) install_node ;;
-    2) view_logs ;;
-    3) check_and_set_alias ;;
-    *) echo "无效选项。" && main_menu ;;
-    esac
-}
+# 准备原始链接
+original_url="LocalHost:3001/d/L2ExecutionEngine/l2-execution-engine-overview?orgId=1&refresh=10s"
 
-# 显示主菜单
-main_menu
+# 替换 LocalHost 为公网 IP 地址
+updated_url=$(echo $original_url | sed "s/LocalHost/$public_ip/")
+
+# 显示更新后的链接
+echo "请通过以下链接查询设备运行情况，如果无法访问，请等待2-3分钟后重试：$updated_url"
