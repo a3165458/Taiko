@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 脚本保存路径
-SCRIPT_PATH="$HOME/manage_taiko.sh"
+SCRIPT_PATH="/root/manage_taiko.sh"
 
 # 安装节点功能
 function install_node() {
@@ -161,7 +161,7 @@ function set_alias() {
     fi
 
     if ! grep -q "alias $alias_name=" "$shell_rc"; then
-        echo "alias $alias_name='bash $SCRIPT_PATH'" >> "$shell_rc"
+        echo "alias $alias_name='bash $/root/manage_taiko.sh'" >> "$shell_rc"
         echo "快捷键 '$alias_name' 已设置到 $shell_rc。"
     else
         echo "快捷键 '$alias_name' 已经设置在 $shell_rc。"
