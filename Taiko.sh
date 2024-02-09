@@ -3,7 +3,10 @@
 # 更新系统包列表
 sudo apt update
 
+
+
 # 检查 Git 是否已安装
+function install_node() {
 if ! command -v git &> /dev/null
 then
     # 如果 Git 未安装，则进行安装
@@ -27,8 +30,11 @@ fi
 
 # 提示用户输入环境变量的值
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
+
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
+
 read -p "请确认是否作为证明者（输入true或者false）: " enable_prover
+
 read -p "请输入0x开头的EVM钱包私钥: " l1_prover_private_key
 
 # 提示用户输入端口配置，允许使用默认值
@@ -133,3 +139,51 @@ updated_url=$(echo $original_url | sed "s/LocalHost/$public_ip/")
 
 # 显示更新后的链接
 echo "请通过以下链接查询设备运行情况，如果无法访问，请等待2-3分钟后重试：$updated_url"
+}
+
+# 查看对应 Docker Compose 日志
+function view_logs() {
+    cd simple-taiko-node
+    docker compose logs -f
+}
+
+# 写入快捷键
+function set_alias() {
+    local alias_name="taikof"
+    local shell_rc="$HOME/.bashrc"
+
+    # 对于 Zsh 用户，使用 .zshrc
+    if [ -n "$ZSH_VERSION" ]; then
+        shell_rc="$HOME/.zshrc"
+    elif [ -n "$BASH_VERSION" ]; then
+        shell_rc="$HOME/.bashrc"
+    fi
+
+    # 检查快捷键是否已经设置
+    if ! grep -q "$alias_name" "$shell_rc"; then
+        echo "设置快捷键 '$alias_name' 到 $shell_rc"
+        echo "alias $alias_name='bash $(pwd)/manage_taiko.sh'" >> "$shell_rc"
+        echo "快捷键 '$alias_name' 已设置。请运行 'source $shell_rc' 来激活快捷键，或重新打开终端。"
+    else
+        echo "快捷键 '$alias_name' 已经设置在 $shell_rc。"
+    fi
+}
+
+# 主菜单
+function main_menu() {
+    echo "请选择要执行的操作:"
+    echo "1. 安装节点"
+    echo "2. 查看Docker Compose日志"
+    echo "3. 设置快捷键"
+    read -p "请输入选项（1-3）: " option
+
+    case $option in
+    1) install_node ;;
+    2) view_logs ;;
+    3) set_alias ;;
+    *) echo "无效选项。" ;;
+    esac
+}
+
+# 显示主菜单
+main_menu
