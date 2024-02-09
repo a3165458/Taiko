@@ -31,27 +31,62 @@ read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
 read -p "请确认是否作为证明者（输入true或者false）: " enable_prover
 read -p "请输入0x开头的EVM钱包私钥: " l1_prover_private_key
 
-# 提示用户输入端口配置，允许使用默认值
+# 检测并推荐未被占用的端口
+function recommend_port {
+    local base_port=$1
+    local max_port=$(($base_port+20000)) # 定义搜索的最大端口范围
+    while : ; do
+        if ss -tuln | grep -q ":$base_port " ; then
+            ((base_port++))
+            if [ $base_port -gt $max_port ]; then
+                echo "无法找到未被占用的端口，请手动指定一个端口。"
+                exit 1
+            fi
+        else
+            echo $base_port
+            break
+        fi
+    done
+}
+
+# 使用推荐端口函数为端口配置
+echo "输入端口配置，留空则使用推荐值。"
+
+# 推荐端口并读取用户输入
 read -p "请输入L2执行引擎HTTP端口 [默认: 8547]: " port_l2_execution_engine_http
-port_l2_execution_engine_http=${port_l2_execution_engine_http:-8547}
+if [ -z "$port_l2_execution_engine_http" ]; then
+    port_l2_execution_engine_http=$(recommend_port 8547)
+fi
 
 read -p "请输入L2执行引擎WS端口 [默认: 8548]: " port_l2_execution_engine_ws
-port_l2_execution_engine_ws=${port_l2_execution_engine_ws:-8548}
+if [ -z "$port_l2_execution_engine_ws" ]; then
+    port_l2_execution_engine_ws=$(recommend_port 8548)
+fi
 
 read -p "请输入L2执行引擎Metrics端口 [默认: 6060]: " port_l2_execution_engine_metrics
-port_l2_execution_engine_metrics=${port_l2_execution_engine_metrics:-6060}
+if [ -z "$port_l2_execution_engine_metrics" ]; then
+    port_l2_execution_engine_metrics=$(recommend_port 6060)
+fi
 
 read -p "请输入L2执行引擎P2P端口 [默认: 30306]: " port_l2_execution_engine_p2p
-port_l2_execution_engine_p2p=${port_l2_execution_engine_p2p:-30306}
+if [ -z "$port_l2_execution_engine_p2p" ]; then
+    port_l2_execution_engine_p2p=$(recommend_port 30306)
+fi
 
 read -p "请输入证明者服务器端口 [默认: 9876]: " port_prover_server
-port_prover_server=${port_prover_server:-9876}
+if [ -z "$port_prover_server" ]; then
+    port_prover_server=$(recommend_port 9876)
+fi
 
 read -p "请输入Prometheus端口 [默认: 9091]: " port_prometheus
-port_prometheus=${port_prometheus:-9091}
+if [ -z "$port_prometheus" ]; then
+    port_prometheus=$(recommend_port 9091)
+fi
 
 read -p "请输入Grafana端口 [默认: 3001]: " port_grafana
-port_grafana=${port_grafana:-3001}
+if [ -z "$port_grafana" ]; then
+    port_grafana=$(recommend_port 3001)
+fi
 
 # 将用户输入的值写入.env文件
 sed -i "s|L1_ENDPOINT_HTTP=.*|L1_ENDPOINT_HTTP=${l1_endpoint_http}|" .env
