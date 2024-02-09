@@ -185,7 +185,7 @@ function main_menu() {
     case $option in
     1) install_node ;;
     2) view_logs ;;
-    3) set_alias ;;
+    3) check_and_set_alias ;;
     *) echo "无效选项。" && main_menu ;;
     esac
 }
