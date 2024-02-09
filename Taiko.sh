@@ -29,7 +29,7 @@ fi
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
 read -p "请确认是否作为证明者（输入true或者false）: " enable_prover
-read -p "请输入0x开头的EVM钱包私钥: " l1_prover_private_key
+read -p "请输入EVM钱包私钥: " l1_prover_private_key
 
 # 检测并罗列未被占用的端口
 function list_recommended_ports {
