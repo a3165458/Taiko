@@ -50,7 +50,7 @@ function recommend_port {
 }
 
 # 使用推荐端口函数为端口配置
-echo "输入端口配置，留空则使用推荐值。"
+echo -e "\033[0;32m输入端口配置，留空则使用推荐值。\033[0m"
 
 # 推荐端口并读取用户输入
 read -p "请输入L2执行引擎HTTP端口 [默认: 8547]: " port_l2_execution_engine_http
