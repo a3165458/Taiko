@@ -144,7 +144,7 @@ sudo docker run hello-world
 docker-compose -v
 
 # 运行 Taiko 节点
-docker compose down && docker compose up -d
+docker compose up -d
 
 # 获取公网 IP 地址
 public_ip=$(curl -s ifconfig.me)
