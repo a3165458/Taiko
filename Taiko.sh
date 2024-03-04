@@ -181,7 +181,7 @@ docker compose up -d
 public_ip=$(curl -s ifconfig.me)
 
 # 准备原始链接
-original_url="LocalHost:${port_grafana:-3001}/d/L2ExecutionEngine/l2-execution-engine-overview?orgId=1&refresh=10s"
+original_url="LocalHost:${port_grafana}/d/L2ExecutionEngine/l2-execution-engine-overview?orgId=1&refresh=10s"
 
 # 替换 LocalHost 为公网 IP 地址
 updated_url=$(echo $original_url | sed "s/LocalHost/$public_ip/")
