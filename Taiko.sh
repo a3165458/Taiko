@@ -59,8 +59,8 @@ fi
 # 提示用户输入环境变量的值
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
-read -p "请确认是否作为证明者（输入true或者false）: " enable_prover
-read -p "请输入EVM钱包私钥: " l1_prover_private_key
+read -p "请确认是否作为提议者（可选true或者false，建议输入true）: " enable_proposer
+read -p "请输入EVM钱包私钥: " l1_proposer_private_key
 
 # 检测并罗列未被占用的端口
 function list_recommended_ports {
@@ -111,8 +111,8 @@ port_grafana=${port_grafana:-3001}
 # 将用户输入的值写入.env文件
 sed -i "s|L1_ENDPOINT_HTTP=.*|L1_ENDPOINT_HTTP=${l1_endpoint_http}|" .env
 sed -i "s|L1_ENDPOINT_WS=.*|L1_ENDPOINT_WS=${l1_endpoint_ws}|" .env
-sed -i "s|ENABLE_PROVER=.*|ENABLE_PROVER=${enable_prover}|" .env
-sed -i "s|L1_PROVER_PRIVATE_KEY=.*|L1_PROVER_PRIVATE_KEY=${l1_prover_private_key}|" .env
+sed -i "s|ENABLE_PROPOSER=.*|ENABLE_PROPOSER=${enable_proposer}|" .env
+sed -i "s|L1_PROPOSER_PRIVATE_KEY=.*|L1_PROPOSER_PRIVATE_KEY=${l1_proposer_private_key}|" .env
 
 # 更新.env文件中的端口配置
 sed -i "s|PORT_L2_EXECUTION_ENGINE_HTTP=.*|PORT_L2_EXECUTION_ENGINE_HTTP=${port_l2_execution_engine_http}|" .env
