@@ -32,14 +32,14 @@ function check_and_set_alias() {
 function install_node() {
 
 # 更新系统包列表
-sudo apt update
+apt update
 
 # 检查 Git 是否已安装
 if ! command -v git &> /dev/null
 then
     # 如果 Git 未安装，则进行安装
     echo "未检测到 Git，正在安装..."
-    sudo apt install git -y
+    apt install git -y
 else
     # 如果 Git 已安装，则不做任何操作
     echo "Git 已安装。"
@@ -128,20 +128,20 @@ sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=http://taiko-a6-prover.zkpool.io|
 echo "用户信息已配置完毕。"
 
 # 升级所有已安装的包
-sudo apt upgrade -y
+apt upgrade -y
 
 # 安装基本组件
-sudo apt install pkg-config curl build-essential libssl-dev libclang-dev ufw -y
+apt install pkg-config curl build-essential libssl-dev libclang-dev ufw -y
 
 # 检查 Docker 是否已安装
 if ! command -v docker &> /dev/null
 then
     # 如果 Docker 未安装，则进行安装
     echo "未检测到 Docker，正在安装..."
-    sudo apt-get install ca-certificates curl gnupg lsb-release
+    apt-get install ca-certificates curl gnupg lsb-release
 
     # 添加 Docker 官方 GPG 密钥
-    sudo mkdir -p /etc/apt/keyrings
+    mkdir -p /etc/apt/keyrings
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
     # 设置 Docker 仓库
@@ -150,11 +150,11 @@ then
       $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
     # 授权 Docker 文件
-    sudo chmod a+r /etc/apt/keyrings/docker.gpg
-    sudo apt-get update
+    chmod a+r /etc/apt/keyrings/docker.gpg
+    apt-get update
 
     # 安装 Docker 最新版本
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+    apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 else
     echo "Docker 已安装。"
 fi
@@ -163,13 +163,13 @@ fi
 if ! command -v docker-compose &> /dev/null
 then
     echo "未检测到 Docker Compose，正在安装..."
-    sudo apt install docker-compose -y
+    apt install docker-compose -y
 else
     echo "Docker Compose 已安装。"
 fi
 
 # 验证 Docker Engine 安装是否成功
-sudo docker run hello-world
+docker run hello-world
 # 应该能看到 hello-world 程序的输出
 
 # 检查 Docker Compose 版本
