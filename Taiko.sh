@@ -195,7 +195,7 @@ echo "请通过以下链接查询设备运行情况，如果无法访问，请�
 # 查看节点日志
 function check_service_status() {
     cd simple-taiko-node
-    docker compose logs -f
+    docker compose logs -f --tail 20
 }
 
 
