@@ -60,7 +60,7 @@ fi
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
 read -p "请确认是否作为提议者（可选true或者false，建议输入true，官方已经提供proposer支持）: " enable_proposer
-read -p "请确认是否关闭P2P同步（可选tur或者false，建议输入true，可以加速节点同步）: " disable_p2p_sync
+read -p "请确认是否关闭P2P同步（可选ture或者false，前期同步节点建议输入false，方便前期同步，后期阶段重跑脚本后，选择true，可以加速节点同步）: " disable_p2p_sync
 read -p "请输入EVM钱包私钥: " l1_proposer_private_key
 
 # 检测并罗列未被占用的端口
