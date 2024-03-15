@@ -59,7 +59,7 @@ fi
 # 提示用户输入环境变量的值
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
-read -p "请确认是否作为提议者（可选true或者false，目前prover 节点宕机，请输入false，更新时间2024.3.14 10.47）: " enable_proposer
+read -p "请确认是否作为提议者（可选true或者false，目前prover 节点已经工作，请输入true，更新时间2024.3.15 21.30）: " enable_proposer
 read -p "请确认是否关闭P2P同步（可选true或者false，前期同步节点建议输入false，方便前期同步，后期阶段重跑脚本后，选择true，可以加速节点同步）: " disable_p2p_sync
 read -p "请输入EVM钱包私钥: " l1_proposer_private_key
 
