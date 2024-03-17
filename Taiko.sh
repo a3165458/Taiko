@@ -166,7 +166,7 @@ fi
 if ! command -v docker-compose &> /dev/null
 then
     echo "未检测到 Docker Compose，正在安装..."
-    sudo apt install docker-compose -y
+    sudo apt install docker-compose-plugin -y
 else
     echo "Docker Compose 已安装。"
 fi
@@ -176,7 +176,7 @@ sudo docker run hello-world
 # 应该能看到 hello-world 程序的输出
 
 # 检查 Docker Compose 版本
-docker-compose -v
+docker compose -v
 
 # 运行 Taiko 节点
 docker compose up -d
