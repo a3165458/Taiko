@@ -134,7 +134,7 @@ echo "用户信息已配置完毕。"
 sudo apt upgrade -y
 
 # 安装基本组件
-sudo apt install pkg-config curl build-essential libssl-dev libclang-dev ufw -y
+sudo apt install pkg-config curl build-essential libssl-dev libclang-dev ufw docker-compose-plugin -y
 
 # 检查 Docker 是否已安装
 if ! command -v docker &> /dev/null
@@ -162,21 +162,13 @@ else
     echo "Docker 已安装。"
 fi
 
-# 检查 Docker Compose 是否已安装
-if ! command -v docker-compose &> /dev/null
-then
-    echo "未检测到 Docker Compose，正在安装..."
-    sudo apt install docker-compose-plugin -y
-else
-    echo "Docker Compose 已安装。"
-fi
 
 # 验证 Docker Engine 安装是否成功
 sudo docker run hello-world
 # 应该能看到 hello-world 程序的输出
 
 # 检查 Docker Compose 版本
-docker compose -v
+docker compose version
 
 # 运行 Taiko 节点
 docker compose up -d
