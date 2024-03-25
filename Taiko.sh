@@ -170,13 +170,17 @@ else
     echo "Docker 已安装。"
 fi
 
+    # 安装 Docker compose 最新版本
+    DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+    mkdir -p $DOCKER_CONFIG/cli-plugins
+    curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+    sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+    docker compose version
 
 # 验证 Docker Engine 安装是否成功
 sudo docker run hello-world
 # 应该能看到 hello-world 程序的输出
 
-# 检查 Docker Compose 版本
-docker compose version
 
 # 运行 Taiko 节点
 docker compose up -d
