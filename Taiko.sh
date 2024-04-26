@@ -67,7 +67,7 @@ fi
 # 提示用户输入环境变量的值
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
-read -p "请输入Beacon Holskey RPC链接: " l1_beacon_http
+read -p "请输入Beacon Holskey RPC（如果你没有搭建的话，请输入:https://ethereum-holesky-beacon-api.publicnode.com/即可）链接: " l1_beacon_http
 read -p "请输入Prover RPC 链接(目前可用任意选一个:http://kenz-prover.hekla.kzvn.xyz:9876或者http://hekla.stonemac65.xyz:9876): " prover_endpoints
 read -p "请确认是否作为提议者（可选true或者false，目前prover 节点已经工作，请输入true，更新时间2024.4.26 15.30）: " enable_proposer
 read -p "请确认是否关闭P2P同步（可选true或者false，请选择false开启）: " disable_p2p_sync
