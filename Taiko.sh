@@ -234,11 +234,7 @@ sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=${prover_endpoints}|" .env
 
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
-docker compose --profile l2_execution_engine up -d
-
-
-# 运行 Taiko proposer 节点
-docker compose up taiko_client_proposer -d
+docker compose --profile l2_execution_engine --profile proposer up -d
 
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
