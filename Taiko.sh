@@ -132,7 +132,7 @@ sed -i "s|PORT_L2_EXECUTION_ENGINE_P2P=.*|PORT_L2_EXECUTION_ENGINE_P2P=${port_l2
 sed -i "s|PORT_PROVER_SERVER=.*|PORT_PROVER_SERVER=${port_prover_server}|" .env
 sed -i "s|PORT_PROMETHEUS=.*|PORT_PROMETHEUS=${port_prometheus}|" .env
 sed -i "s|PORT_GRAFANA=.*|PORT_GRAFANA=${port_grafana}|" .env
-sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=http://taiko-a6-prover.zkpool.io|" .env
+sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=http://hekla.stonemac65.xyz:9876|" .env
 sed -i "s|BLOCK_PROPOSAL_FEE=.*|BLOCK_PROPOSAL_FEE=30|" .env
 
 # 用户信息已配置完毕
@@ -183,7 +183,7 @@ sudo docker run hello-world
 
 
 # 运行 Taiko 节点
-docker compose up -d
+docker compose up taiko_client_proposer -d
 
 # 获取公网 IP 地址
 public_ip=$(curl -s ifconfig.me)
