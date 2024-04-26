@@ -68,7 +68,8 @@ fi
 read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
 read -p "请输入Beacon Holskey RPC链接: " l1_beacon_http
-read -p "请确认是否作为提议者（可选true或者false，目前prover 节点已经工作，请输入true，更新时间2024.3.15 21.30）: " enable_proposer
+read -p "请输入Prover RPC 链接(目前可用任意选一个:http://kenz-prover.hekla.kzvn.xyz:9876或者http://hekla.stonemac65.xyz:9876): " prover_endpoints
+read -p "请确认是否作为提议者（可选true或者false，目前prover 节点已经工作，请输入true，更新时间2024.4.26 15.30）: " enable_proposer
 read -p "请确认是否关闭P2P同步（可选true或者false，请选择false开启）: " disable_p2p_sync
 read -p "请输入EVM钱包私钥: " l1_proposer_private_key
 read -p "请输入EVM钱包地址: " l2_suggested_fee_recipient
@@ -136,7 +137,7 @@ sed -i "s|PORT_L2_EXECUTION_ENGINE_P2P=.*|PORT_L2_EXECUTION_ENGINE_P2P=${port_l2
 sed -i "s|PORT_PROVER_SERVER=.*|PORT_PROVER_SERVER=${port_prover_server}|" .env
 sed -i "s|PORT_PROMETHEUS=.*|PORT_PROMETHEUS=${port_prometheus}|" .env
 sed -i "s|PORT_GRAFANA=.*|PORT_GRAFANA=${port_grafana}|" .env
-sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=http://hekla.stonemac65.xyz:9876|" .env
+sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=${prover_endpoints}|" .env
 sed -i "s|BLOCK_PROPOSAL_FEE=.*|BLOCK_PROPOSAL_FEE=30|" .env
 
 # 用户信息已配置完毕
