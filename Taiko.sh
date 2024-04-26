@@ -71,7 +71,7 @@ read -p "请输入Beacon Holskey RPC链接: " l1_beacon_http
 read -p "请确认是否作为提议者（可选true或者false，目前prover 节点已经工作，请输入true，更新时间2024.3.15 21.30）: " enable_proposer
 read -p "请确认是否关闭P2P同步（可选true或者false，请选择false开启）: " disable_p2p_sync
 read -p "请输入EVM钱包私钥: " l1_proposer_private_key
-read -p "请输入EVM钱包公钥: " l2_suggested_fee_recipient
+read -p "请输入EVM钱包地址: " l2_suggested_fee_recipient
 
 # 检测并罗列未被占用的端口
 function list_recommended_ports {
