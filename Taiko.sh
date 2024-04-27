@@ -189,10 +189,8 @@ sudo docker run hello-world
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
 docker compose --profile l2_execution_engine up -d
+docker compose --profile proposer up -d
 
-
-# 运行 Taiko proposer 节点
-docker compose up taiko_client_proposer -d
 # 获取公网 IP 地址
 public_ip=$(curl -s ifconfig.me)
 
@@ -242,8 +240,7 @@ sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=${prover_endpoints}|" .env
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
 docker compose --profile l2_execution_engine up -d
-docker compose up taiko_client_proposer -d
-
+docker compose --profile proposer up -d
 
 }
 
@@ -258,7 +255,7 @@ sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=${prover_endpoints}|" .env
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
 docker compose --profile l2_execution_engine up -d
-docker compose up taiko_client_proposer -d
+docker compose --profile proposer up -d
 
 }
 
