@@ -259,6 +259,7 @@ docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
 docker compose --profile l2_execution_engine --profile proposer up -d
 
+}
 
 # 主菜单
 function main_menu() {
