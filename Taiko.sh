@@ -247,13 +247,17 @@ docker compose --profile l2_execution_engine --profile proposer up -d
 
 }
 
-function prover() {
+function change_prover() {
 cd #HOME
 cd simple-taiko-node
 
 read -p "请输入Prover RPC 链接(目前可用任意选一个:http://kenz-prover.hekla.kzvn.xyz:9876或者http://hekla.stonemac65.xyz:9876): " prover_endpoints
 
 sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=${prover_endpoints}|" .env
+
+docker compose --profile l2_execution_engine down
+docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
+docker compose --profile l2_execution_engine --profile proposer up -d
 
 
 # 主菜单
@@ -269,6 +273,7 @@ function main_menu() {
     echo "2. 查看节点日志"
     echo "3. 设置快捷键的功能"
     echo "4. 更改常规配置"
+    echo "5. 更换rpc"
     read -p "请输入选项（1-3）: " OPTION
 
     case $OPTION in
@@ -276,6 +281,7 @@ function main_menu() {
     2) check_service_status ;;
     3) check_and_set_alias ;; 
     4) change_option ;; 
+    5) change_prover ;; 
     *) echo "无效选项。" ;;
     esac
 }
