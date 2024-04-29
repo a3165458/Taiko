@@ -272,11 +272,29 @@ docker compose --profile proposer up -d
 
 }
 
+# 查看节点日志
+function delete_new() {
+    cd #HOME
+    cd simple-taiko-node
+    docker compose --profile l2_execution_engine down -v
+    docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
+    cd #HOME
+    rm -rf simple-taiko-node
+}
+
+function delete_old() {
+    cd #HOME
+    cd simple-taiko-node
+    docker compose down -v
+    cd #HOME
+    rm -rf simple-taiko-node
+}
+
 # 主菜单
 function main_menu() {
     clear
     echo "脚本以及教程由推特用户大赌哥 @y95277777 编写，免费开源，请勿相信收费"
-    echo "================================================================"
+    echo "=====================安装及常规修改功能========================="
     echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
     echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
     echo "节点社区 Discord 社群:https://discord.gg/GbMV5EcNWF"
@@ -286,6 +304,9 @@ function main_menu() {
     echo "3. 设置快捷键的功能"
     echo "4. 更改常规配置"
     echo "5. 更换rpc"
+    echo "=======================卸载节点功能============================="
+    echo "6. 卸载新测试网节点（所有数据清除）"
+    echo "7. 卸载旧测试网节点（所有数据清除）"
     read -p "请输入选项（1-3）: " OPTION
 
     case $OPTION in
@@ -294,6 +315,8 @@ function main_menu() {
     3) check_and_set_alias ;; 
     4) change_option ;; 
     5) change_prover ;; 
+    6) delete_new ;; 
+    7) delete_old ;; 
     *) echo "无效选项。" ;;
     esac
 }
