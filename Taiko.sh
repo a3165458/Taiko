@@ -69,7 +69,7 @@ read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
 
-read -p "请输入Beacon Holskey RPC（如果你没有搭建的话，请输入:https://ethereum-holesky-beacon-api.publicnode.com即可）链接: " l1_beacon_http
+read -p "请输入Beacon Holskey RPC（如果你没有搭建的话，请输入:http://195.201.170.121:5052或者http://188.40.51.249:5052即可）链接: " l1_beacon_http
 
 read -p "请输入Prover RPC 链接(目前可用任意选一个:http://kenz-prover.hekla.kzvn.xyz:9876或者http://hekla.stonemac65.xyz:9876): " prover_endpoints
 
@@ -228,7 +228,7 @@ read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
 
 read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
 
-read -p "请输入Beacon Holskey RPC（如果你没有搭建的话，请输入:https://ethereum-holesky-beacon-api.publicnode.com/即可）链接: " l1_beacon_http
+read -p "请输入Beacon Holskey RPC（如果你没有搭建的话，请输入:http://195.201.170.121:5052或者http://188.40.51.249:5052即可）链接: " l1_beacon_http
 
 read -p "请输入Prover RPC 链接(目前可用任意选一个:http://kenz-prover.hekla.kzvn.xyz:9876或者http://hekla.stonemac65.xyz:9876): " prover_endpoints
 
