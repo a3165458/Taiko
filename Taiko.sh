@@ -299,6 +299,7 @@ function update_beacon_bootnode() {
     sed -i "s|L1_BEACON_HTTP=.*|L1_BEACON_HTTP=${l1_beacon_http}|" .env
     docker compose --profile l2_execution_engine down -v
     docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
+    docker compose --profile l2_execution_engine up -d
     docker compose --profile proposer up -d
 }
 # 主菜单
