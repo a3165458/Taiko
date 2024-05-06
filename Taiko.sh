@@ -321,7 +321,7 @@ function main_menu() {
     echo "7. 卸载旧测试网节点（所有数据清除）"
     echo "=======================常规更新功能============================="
     echo "8. 更新Beacon rpc和加速节点"
-    read -p "请输入选项（1-3）: " OPTION
+    read -p "请输入选项（1-8）: " OPTION
 
     case $OPTION in
     1) install_node ;;
