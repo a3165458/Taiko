@@ -302,6 +302,26 @@ function update_beacon_bootnode() {
     docker compose --profile l2_execution_engine up -d
     docker compose --profile proposer up -d
 }
+
+
+function change_L1RPC() {
+cd #HOME
+cd simple-taiko-node
+
+read -p "请输入BlockPI holesky HTTP链接: " l1_endpoint_http
+
+read -p "请输入BlockPI holesky WS链接: " l1_endpoint_ws
+
+sed -i "s|L1_ENDPOINT_HTTP=.*|L1_ENDPOINT_HTTP=${l1_endpoint_http}|" .env
+sed -i "s|L1_ENDPOINT_WS=.*|L1_ENDPOINT_WS=${l1_endpoint_ws}|" .env
+
+docker compose --profile l2_execution_engine down
+docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
+docker compose --profile l2_execution_engine up -d
+docker compose --profile proposer up -d
+
+}
+
 # 主菜单
 function main_menu() {
     clear
@@ -315,12 +335,13 @@ function main_menu() {
     echo "2. 查看节点日志"
     echo "3. 设置快捷键的功能"
     echo "4. 更改常规配置"
-    echo "5. 更换rpc"
+    echo "5. 更换prover rpc"
     echo "=======================卸载节点功能============================="
     echo "6. 卸载新测试网节点（所有数据清除）"
     echo "7. 卸载旧测试网节点（所有数据清除）"
     echo "=======================常规更新功能============================="
     echo "8. 更新Beacon rpc和加速节点"
+    echo "9. 更换L1 holesky rpc"
     read -p "请输入选项（1-8）: " OPTION
 
     case $OPTION in
@@ -332,6 +353,7 @@ function main_menu() {
     6) delete_new ;; 
     7) delete_old ;; 
     8) update_beacon_bootnode ;; 
+    9) change_L1RPC ;;
     *) echo "无效选项。" ;;
     esac
 }
