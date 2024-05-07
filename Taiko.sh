@@ -195,7 +195,6 @@ sudo docker run hello-world
 # 运行 Taiko 节点
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
-docker compose --profile l2_execution_engine up -d
 docker compose --profile proposer up -d
 
 # 获取公网 IP 地址
@@ -253,7 +252,6 @@ sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=${prover_endpoints}|" .env
 
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
-docker compose --profile l2_execution_engine up -d
 docker compose --profile proposer up -d
 
 }
@@ -268,7 +266,7 @@ sed -i "s|PROVER_ENDPOINTS=.*|PROVER_ENDPOINTS=${prover_endpoints}|" .env
 
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
-docker compose --profile l2_execution_engine up -d
+
 docker compose --profile proposer up -d
 
 }
@@ -299,7 +297,6 @@ function update_beacon_bootnode() {
     sed -i "s|L1_BEACON_HTTP=.*|L1_BEACON_HTTP=${l1_beacon_http}|" .env
     docker compose --profile l2_execution_engine down -v
     docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
-    docker compose --profile l2_execution_engine up -d
     docker compose --profile proposer up -d
 }
 
@@ -317,7 +314,6 @@ sed -i "s|L1_ENDPOINT_WS=.*|L1_ENDPOINT_WS=${l1_endpoint_ws}|" .env
 
 docker compose --profile l2_execution_engine down
 docker stop simple-taiko-node-taiko_client_proposer-1 && docker rm simple-taiko-node-taiko_client_proposer-1
-docker compose --profile l2_execution_engine up -d
 docker compose --profile proposer up -d
 
 }
