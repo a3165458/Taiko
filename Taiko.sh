@@ -58,6 +58,7 @@ git clone https://github.com/taikoxyz/simple-taiko-node.git
 
 # 进入 Taiko 目录
 cd simple-taiko-node
+git switch hekla
 
 # 如果不存在.env文件，则从示例创建一个
 if [ ! -f .env ]; then
